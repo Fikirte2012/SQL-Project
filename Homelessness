@@ -1,0 +1,93 @@
+/*1. We want to develop some new programs to help unaccompanied homeless children under 18 years old, and need some locations to start some programs. What are the top 3 Continuum of Care areas (CoC_Name in the table) with the highest number of unaccompanied homeless youth under 18 in the year 2018.
+
+Answer:   1.San Jose/Santa Clara City & County CoC , 506 Unaccompanied Homeless Youth under 18
+               2.Oregon Balance of State CoC, 243 Unaccompanied Homeless Youth under 18
+               3. Las Vegas/Clark County CoC, 214 Unaccompanied Homeless Youth under 18
+*/
+
+SELECT CoC_Name, SUM(Homeless_Unaccompanied_Youth_Under_18) AS unaccompanied_Homeless_Youth,Count_Year
+FROM `merit-america-data-proect-ft.Exploration_Project.homelessness`
+WHERE Count_Year = 2018
+GROUP BY CoC_Name, Count_Year
+order by unaccompanied_Homeless_Youth desc
+
+/*2.We suspect that in Delaware (state abbreviation is “DE”), the number of unsheltered homeless people has been increasing over the past 7 years. Is this statement true? How do you know?
+
+Answer: YES, the unsheltered homeless in 2012 was 22 and in 2018 the number of unsheltered homeless increased by 93.*/
+
+
+SELECT CoC_Name,State, Unsheltered_Homeless,Count_Year
+FROM `merit-america-data-proect-ft.Exploration_Project.homelessness`
+WHERE State = 'DE'
+order by Count_Year desc
+
+/*3. The Safe Haven program was created in 1992 to provide shelter for people who are homeless and have a serious mental illness. However, funding for Safe Havens was cut in 2009, so no new Safe Havens could be created. Looking at data from only 2018, answer the following questions:
+In 2018, 
+a.how many different locations had at least 1 person as a Sheltered_SH?
+
+Answer: 50 locations
+*/
+
+SELECT CoC_Name,Sheltered_SH_Homeless,Count_Year
+FROM `merit-america-data-proect-ft.Exploration_Project.homelessness`
+WHERE Count_Year = 2018
+And Sheltered_SH_Homeless >1
+order by Sheltered_SH_Homeless
+
+/*b. In 2018, what was the CoC_Name of the top 3 locations in terms of number of Sheltered_SH?
+
+Answer:     1. Philadelphia CoC ,  235  number of Sheltered_SH 
+                   2.  Reno, Sparks/Washoe County CoC, 185  number of Sheltered_SH
+                   3. Indianapolis CoC, 68  number of Sheltered_SH
+*/
+
+SELECT CoC_Name,Sheltered_SH_Homeless,Count_Year
+FROM `merit-america-data-proect-ft.Exploration_Project.homelessness`
+WHERE Count_Year = 2018
+And Sheltered_SH_Homeless >1
+order by Sheltered_SH_Homeless DESC
+
+/* 
+4. What are the top 7 states in terms of Overall Homeless population in the year 2018? (Hint: This question will require the use of a GROUP BY clause in your query)
+
+Answer: 1.California (CA) 
+              2. New York (NY)
+              3. Florida (FL) 
+              4. Texas (TX)
+              5. Washington (WA) 
+              6. Massachusetts (MA)
+              7. Oregon (OR)
+*/
+SELECT State,Count_Year,
+SUM(Overall_Homeless )AS Total_Homeless_Rank
+FROM `merit-america-data-proect-ft.Exploration_Project.homelessness`
+Where Count_Year = 2018
+GROUP BY State, Count_Year
+order by Total_Homeless_Rank desc
+
+
+/* 6. In order to create better policies to support homeless individuals, we want to study locations that are doing a good job providing shelter. To do so, we need to identify places that have a relatively large number of homeless, but a relatively small number of unsheltered homeless.
+
+Generate a list of all locations, in 2018, that have more than 1000 Overall Homeless, but less than 100 unsheltered homeless. 
+
+Answer:  
+
+Nassau, Suffolk Counties CoC
+Springfield/Hampden County CoC
+Maine Statewide CoC
+Yonkers, Mount Vernon/Westchester County CoC
+Cleveland/Cuyahoga County CoC
+Omaha, Council Bluffs CoC
+Cincinnati/Hamilton County CoC
+Rhode Island Statewide CoC
+Anchorage CoC
+Quincy, Brockton, Weymouth, Plymouth City and County CoC
+Delaware Statewide CoC
+Lynn CoC
+*/
+
+SELECT CoC_Name,Overall_Homeless,Unsheltered_Homeless ,Count_Year
+FROM `merit-america-data-proect-ft.Exploration_Project.homelessness`
+Where (Count_Year = 2018 AND Overall_Homeless > 1000 AND Unsheltered_Homeless < 100)
+order by Overall_Homeless desc
+
